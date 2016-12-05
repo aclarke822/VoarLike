@@ -24,14 +24,14 @@ public class Spawner : MonoBehaviour {
     void spawnFodder()
     {
         Vector2 randomVector2 = Random.insideUnitCircle.normalized;
-        Rigidbody fodderClone = (Rigidbody) Instantiate(fodder, spawnerTransform.position + new Vector3(randomVector2.x * 50.0f + 1.0f, 0.0f, randomVector2.y * 50.0f + 1.0f), new Quaternion());
+        Rigidbody fodderClone = (Rigidbody) Instantiate(fodder, new Vector3(spawnerTransform.position.x + randomVector2.x * 50.0f + 1.0f, 0.0f, spawnerTransform.position.y + randomVector2.y * 50.0f + 1.0f), new Quaternion());
         fodderClone.velocity = new Vector3 (randomVector2.x, 0.0f, randomVector2.y) * 200;
     }
 
     void spawnChaser()
     {
         Vector2 randomVector2 = Random.insideUnitCircle.normalized;
-        Rigidbody chaserClone = (Rigidbody)Instantiate(chaser, spawnerTransform.position + new Vector3(randomVector2.x * 50.0f + 1.0f, 0.0f, randomVector2.y * 50.0f + 1.0f), new Quaternion());
+        Rigidbody chaserClone = (Rigidbody)Instantiate(chaser, new Vector3(spawnerTransform.position.x + randomVector2.x * 50.0f + 1.0f, 0.0f, spawnerTransform.position.y + randomVector2.y * 50.0f + 1.0f), new Quaternion());
         chaserClone.velocity = new Vector3(randomVector2.x, 0.0f, randomVector2.y) * 30;
     }
 }

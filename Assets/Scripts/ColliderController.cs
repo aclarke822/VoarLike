@@ -24,13 +24,17 @@ public class ColliderController : MonoBehaviour
         if (otherGameObject.CompareTag("Spawner") || thisGameObject.CompareTag("Spawner"))
         {
             return;
-        } else if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Fodder") || other.gameObject.CompareTag("Chaser"))
+        } else if(otherGameObject.CompareTag("Player") && thisGameObject.CompareTag("Player"))
+        {
+            return;
+        }
+        else if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Fodder") || other.gameObject.CompareTag("Chaser"))
         {
             if (otherGameObject.GetComponent<Rigidbody>().mass < thisGameObject.GetComponent<Rigidbody>().mass)
             {
                 gameControllerClass.addMassFromObject(thisGameObject, otherGameObject);
                 Destroy(otherGameObject);
-            } 
+            }
         }
     }
 }

@@ -14,19 +14,14 @@ Platform assembly: C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Mana
 Loading C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.141 seconds
+- Completed reload, in  0.072 seconds
 Platform assembly: C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\aclar\Documents\VoarLike\Builds\firstBuild_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.971156 ms
-NullReferenceException: Object reference not set to an instance of an object
-  at ColliderController.OnCollisionEnter (UnityEngine.Collision other) [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
-
+UnloadTime: 0.923267 ms
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 1fc0 -> priority: 1 
-  Thread -> id: 7f0 -> priority: 1 
+  Thread -> id: 1cdc -> priority: 1 
+  Thread -> id: 1628 -> priority: 1 

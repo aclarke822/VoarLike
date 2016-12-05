@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     public GameObject spawner;
     public Rigidbody chaser;
+    public Rigidbody player;
+
+    private GameObject[] playerBodies;
 
     public int speed = 1000;
     public int gridSize = 1;
@@ -13,28 +17,46 @@ public class GameController : MonoBehaviour {
     public float speedDissipationFactor = 0.99f;
     public float maximumSizeClamp = 100000.0f;
     public float attractionDistance = 10.0f;
+    public float groupForceFactor = 50.0f;
 
     private void Awake()
     {
 
     }
     void Start () {
-
-        GameObject spawnerClone1 = (GameObject) Instantiate(spawner, new Vector3(-500.0f, 0.0f, -500.0f), new Quaternion());
-        GameObject spawnerClone2 = (GameObject)Instantiate(spawner, new Vector3(-500.0f, 0.0f, 0.0f), new Quaternion());
-        GameObject spawnerClone3 = (GameObject)Instantiate(spawner, new Vector3(-500.0f, 0.0f, 500.0f), new Quaternion());
-        GameObject spawnerClone4 = (GameObject)Instantiate(spawner, new Vector3(0.0f, 0.0f, -500.0f), new Quaternion());
-        GameObject spawnerClone5 = (GameObject)Instantiate(spawner, new Vector3(0.0f, 0.0f, 0.0f), new Quaternion());
-        GameObject spawnerClone6 = (GameObject)Instantiate(spawner, new Vector3(0.0f, 0.0f, 500.0f), new Quaternion());
-        GameObject spawnerClone7 = (GameObject)Instantiate(spawner, new Vector3(500.0f, 0.0f, -500.0f), new Quaternion());
-        GameObject spawnerClone8 = (GameObject)Instantiate(spawner, new Vector3(500.0f, 0.0f, 0.0f), new Quaternion());
-        GameObject spawnerClone9 = (GameObject)Instantiate(spawner, new Vector3(500.0f, 0.0f, 500.0f), new Quaternion());
-        
+        playerBodies = GameObject.FindGameObjectsWithTag("Player");
+        GameObject spawnerClone1 = (GameObject) Instantiate(spawner, new Vector3(-500.0f, -5, -500.0f), new Quaternion());
+        GameObject spawnerClone2 = (GameObject)Instantiate(spawner, new Vector3(-500.0f, -5, 0.0f), new Quaternion());
+        GameObject spawnerClone3 = (GameObject)Instantiate(spawner, new Vector3(-500.0f, -5, 500.0f), new Quaternion());
+        GameObject spawnerClone4 = (GameObject)Instantiate(spawner, new Vector3(0.0f, -5, -500.0f), new Quaternion());
+        GameObject spawnerClone5 = (GameObject)Instantiate(spawner, new Vector3(0.0f, -5, 0.0f), new Quaternion());
+        GameObject spawnerClone6 = (GameObject)Instantiate(spawner, new Vector3(0.0f, -5, 500.0f), new Quaternion());
+        GameObject spawnerClone7 = (GameObject)Instantiate(spawner, new Vector3(500.0f, -5, -500.0f), new Quaternion());
+        GameObject spawnerClone8 = (GameObject)Instantiate(spawner, new Vector3(500.0f, -5, 0.0f), new Quaternion());
+        GameObject spawnerClone9 = (GameObject)Instantiate(spawner, new Vector3(500.0f, -5, 500.0f), new Quaternion());
     }
 	
-	// Update is called once per frame
 	void Update () {
-        
+        playerBodies = GameObject.FindGameObjectsWithTag("Player");
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (playerBodies.Length > 0)
+            {
+                destroyAllSelectedBodies(playerBodies);
+            }
+            Vector2 randomVector2 = Random.insideUnitCircle.normalized;
+            Rigidbody playerClone = (Rigidbody)Instantiate(player, new Vector3(randomVector2.x * 1000.0f - 500.0f, 0.0f, randomVector2.y * 1000.0f - 500.0f), new Quaternion());
+            playerClone.GetComponent<Rigidbody>().mass = 1;
+            
+        }
+
+
     }
 
     public GameObject findClosestObjectByTag(GameObject selectedObject, string targetTag)
@@ -181,6 +203,16 @@ public class GameController : MonoBehaviour {
         return attractionDistance;
     }
 
+    public GameObject[] getPlayerBodies()
+    {
+        return playerBodies;
+    }
+
+    public float getGroupForceFactor()
+    {
+        return groupForceFactor;
+    }
+
     public void addMassFromObject(GameObject massTo, GameObject massOf)
     {
         float newMass = Mathf.Clamp(massTo.GetComponent<Rigidbody>().mass + massOf.GetComponent<Rigidbody>().mass, 1.0f, maximumSizeClamp);
@@ -199,4 +231,41 @@ public class GameController : MonoBehaviour {
     {
         selectedObject.GetComponent<Transform>().localScale = new Vector3(selectedObject.GetComponent<Rigidbody>().mass, 0.0f, selectedObject.GetComponent<Rigidbody>().mass);
     }
+
+    public Vector3 getCenterOfMass(GameObject[] selectedObjects)
+    {
+        float totalMass = 0.0f;
+        float xTotalMass = 0.0f;
+        float yTotalMass = 0.0f;
+        float zTotalMass = 0.0f;
+
+        foreach (GameObject selectedObject in selectedObjects)
+        {
+            totalMass += selectedObject.GetComponent<Rigidbody>().mass;
+            xTotalMass += selectedObject.GetComponent<Transform>().position.x * selectedObject.GetComponent<Rigidbody>().mass;
+            yTotalMass += selectedObject.GetComponent<Transform>().position.y * selectedObject.GetComponent<Rigidbody>().mass;
+            zTotalMass += selectedObject.GetComponent<Transform>().position.z * selectedObject.GetComponent<Rigidbody>().mass;
+        }
+
+        return new Vector3(xTotalMass / totalMass, yTotalMass / totalMass, zTotalMass / totalMass);
+    }
+
+    public float getTotalMass (GameObject[] selectedObjects)
+    {
+        float totalMass = 0.0f;
+        foreach (GameObject selectedObject in selectedObjects)
+        {
+            totalMass += selectedObject.GetComponent<Rigidbody>().mass;
+        }
+        return totalMass;
+    }
+
+    public void destroyAllSelectedBodies(GameObject[] selectedObjects)
+    {
+        foreach (GameObject selectedObject in selectedObjects)
+        {
+            DestroyObject(selectedObject);
+        }
+    }
+
 }

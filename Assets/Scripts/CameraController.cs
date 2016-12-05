@@ -3,27 +3,28 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
-    private GameObject player;
-    private Transform playerTransform;
-    private Rigidbody playerRigidBody;
+    private GameController gameControllerClass;
     private Transform cameraTransform;
+    private Vector3 centerOfPlayerMass;
+    private GameObject[] playerBodies;
     public float orthographicSizeFactor = 0.9f;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerTransform = player.GetComponent<Transform>();
-        playerRigidBody = player.GetComponent<Rigidbody>();
+        gameControllerClass = (GameController)GameObject.FindGameObjectWithTag("GameController").GetComponent("GameController");
         cameraTransform = GetComponent<Transform>();
+
 
     }
 
     void Update()
     {
-        if (playerTransform != null)
+        playerBodies = gameControllerClass.getPlayerBodies();
+        if (playerBodies != null && playerBodies.Length > 0)
         {
-            cameraTransform.position = new Vector3(playerTransform.position.x, 100.0f, playerTransform.position.z);
-            gameObject.GetComponent<Camera>().orthographicSize = playerRigidBody.mass * orthographicSizeFactor * 10;
+            centerOfPlayerMass = gameControllerClass.getCenterOfMass(playerBodies);
+            cameraTransform.position = new Vector3(centerOfPlayerMass.x, 100.0f, centerOfPlayerMass.z);
+            gameObject.GetComponent<Camera>().orthographicSize = gameControllerClass.getTotalMass(playerBodies) * orthographicSizeFactor * 10;
 
 
         }
