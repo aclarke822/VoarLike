@@ -42,9 +42,9 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 heading = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
 
-        playerRigidBody.AddForce(heading * speed * speedModifier * Time.smoothDeltaTime);
+        playerRigidBody.AddForce(heading * speed * speedModifier * Time.smoothDeltaTime * playerRigidBody.mass);
 
-        if(Input.GetKeyUp(KeyCode.Z))
+        if(Input.GetKeyUp(KeyCode.Space))
         {
             splitBodiesInHalf();
         }
@@ -65,10 +65,14 @@ public class PlayerController : MonoBehaviour {
     {
         if (playerRigidBody.mass >= 2)
         {
-            gameControllerClass.addMass(player, -playerRigidBody.mass/2);
+            gameControllerClass.addMass(player, -playerRigidBody.mass / 2);
             Rigidbody playerClone = (Rigidbody)Instantiate(playerSplit, playerTransform.position, new Quaternion());
             playerClone.velocity = playerRigidBody.velocity;
+            playerClone.mass = playerRigidBody.mass;
+            
         }
         
     }
+
+    
 }

@@ -20,7 +20,7 @@ public class FodderController : MonoBehaviour {
 	void Update ()
     {
         GameObject nearbyObject;
-        nearbyObject = gameControllerClass.findClosestObjectByTags(fodder, new string[] { "Player", "Chaser" });
+        nearbyObject = gameControllerClass.findClosestObjectByTags(fodder, new string[] { "Player", "Chaser" }, true);
         if (nearbyObject != null)
         {
             if(Vector3.Distance(nearbyObject.GetComponent<Transform>().position, fodder.GetComponent<Transform>().position) < attractionDistance) {

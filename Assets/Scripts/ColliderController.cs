@@ -32,8 +32,12 @@ public class ColliderController : MonoBehaviour
         {
             if (otherGameObject.GetComponent<Rigidbody>().mass < thisGameObject.GetComponent<Rigidbody>().mass)
             {
-                gameControllerClass.addMassFromObject(thisGameObject, otherGameObject);
-                Destroy(otherGameObject);
+                if(thisGameObject != null && otherGameObject != null)
+                {
+                    gameControllerClass.addMassFromObject(thisGameObject, otherGameObject);
+                    Destroy(otherGameObject);
+                }
+                
             }
         }
     }

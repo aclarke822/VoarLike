@@ -47,7 +47,7 @@ public class ChaserController : MonoBehaviour
         speed = gameControllerClass.getSpeed() * Mathf.Pow(gameControllerClass.getSpeedDissipationFactor(), chaserRigidBody.mass);
         
 
-        nearbyObject = gameControllerClass.findClosestObjectByTagsIgnoreEquivalentMass(chaser, new string[] {"Player", "Fodder", "Chaser"});
+        nearbyObject = gameControllerClass.findClosestObjectByTags(chaser, new string[] {"Player", "Fodder", "Chaser"}, true);
 
         if (nearbyObject != null && nearbyObject.GetComponent<Rigidbody>().mass < chaserRigidBody.mass)
         {
@@ -61,7 +61,7 @@ public class ChaserController : MonoBehaviour
         }
         else
         {
-            nearbyObject = gameControllerClass.findClosestObjectByTag(chaser, "Fodder");
+            nearbyObject = gameControllerClass.findClosestObjectByTag(chaser, "Fodder", true);
             if (nearbyObject != null)
             {
                 heading = gameControllerClass.targetMovingObject(nearbyObject, chaser);
